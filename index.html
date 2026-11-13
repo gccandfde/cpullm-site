@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CPU-LLM: AI optimizers and benchmark systems</title>
-<meta name="description" content="CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory. Five products: Optimizer, Bench, Control, Offloader and Unlock.">
+<meta name="description" content="CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory. Six products: Optimizer, Bench, Control, Offloader, Unlock and ChipForge.">
 <meta property="og:title" content="CPU-LLM: AI on the hardware you own, proved with numbers">
 <meta property="og:description" content="AI optimizers and benchmark systems for CPUs, GPUs and memory.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,6 +54,7 @@ h1 em{font-style:normal;color:var(--accent)}
 .card ul{margin:8px 0 14px;padding-left:18px;font-size:15px}
 .price{font:600 15px var(--mono);color:var(--ink)}
 .price small{color:var(--muted);font-weight:400}
+.card .more{display:inline-block;margin-top:10px;font-weight:600;text-decoration:none}
 .tag{display:inline-block;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--indigo);margin-bottom:8px}
 .stats{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
 .stat b{display:block;font:700 clamp(32px,4vw,44px)/1.05 var(--font);letter-spacing:-.02em;color:var(--accent)}
@@ -87,7 +88,7 @@ footer a:hover{color:var(--ink)}
     <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="6" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="11" y="11" width="10" height="10" rx="2" fill="#b8561b"/><path d="M11 2v4M16 2v4M21 2v4M11 26v4M16 26v4M21 26v4M2 11h4M2 16h4M2 21h4M26 11h4M26 16h4M26 21h4" stroke="currentColor" stroke-width="2"/></svg>
     CPU-LLM</a>
   <nav class="sections" aria-label="Page sections">
-    <a href="#products">Products</a><a href="#proof">Proof</a><a href="#how">How it works</a><a href="#offloader">Offloader</a><a href="#unlock">Unlock</a><a href="#deploy">Deploy</a>
+    <a href="#products">Products</a><a href="https://cpullm.gccandfde.com/products">All product pages</a><a href="#proof">Proof</a><a href="#how">How it works</a><a href="#offloader">Offloader</a><a href="#unlock">Unlock</a><a href="#deploy">Deploy</a>
   </nav>
   <button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Theme</button>
 </div></header>
@@ -96,7 +97,7 @@ footer a:hover{color:var(--ink)}
 <section class="hero"><div class="wrap">
   <p class="eyebrow">AI optimizers · benchmark systems · next: accelerators</p>
   <h1>AI on the hardware you own. <em>Proved with numbers.</em></h1>
-  <p class="lead">CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory. Five products, one platform: pick what you need, run it on your own machines, keep your data, and get results you can trust and publish.</p>
+  <p class="lead">CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory, and ChipForge to design the chips. Six products, one platform: pick what you need, run it on your own machines, keep your data, and get results you can trust and publish.</p>
   <div class="btns">
     <a class="btn primary" href="https://cpullm.gccandfde.com/onboarding">Talk to us</a>
     <a class="btn" href="#products">See the products</a>
@@ -106,15 +107,16 @@ footer a:hover{color:var(--ink)}
 
 <section class="chapter" id="products"><div class="wrap">
   <p class="eyebrow">The suite</p>
-  <h2>Five products. <span>Pick what you need.</span></h2>
+  <h2>Six products. <span>Pick what you need.</span></h2>
   <p class="sub">Each product works on its own. Together they share one set of machines, runs and results, so a benchmark, a tuning run and a power change land in the same place.</p>
   <div class="grid">
-    <article class="card"><span class="tag">Optimizer</span><h3>Make models faster</h3><p>Tunes precision, threads and compile settings on your hardware, keeps the fastest setting that holds quality, checks answers on real prompts and serves the winner.</p><p class="price">From $18,000 <small>per year</small></p></article>
-    <article class="card"><span class="tag">Bench</span><h3>Measure what hardware can do</h3><p>Memory, matrix and attention ceilings for CPUs, GPUs and memory, an end-to-end AI benchmark with full disclosure reports, and architecture planning.</p><p class="price">From $12,000 <small>per year</small></p></article>
-    <article class="card"><span class="tag">Control</span><h3>Run the fleet</h3><p>Energy per token, auto cores at a target load, power schedules, focus mode, process control, capacity forecasts and live machine health.</p><p class="price">From $9,000 <small>per year</small></p></article>
-    <article class="card"><span class="tag">Offloader</span><h3>Bigger models, smaller machines</h3><p>Model Offloader keeps easy questions on a local model and sends only hard ones to the cloud. colibri runs mixture-of-experts models larger than RAM. Both measured on your machines.</p><p class="price">From $6,000 <small>per year</small></p></article>
-    <article class="card"><span class="tag">Unlock</span><h3>Find unused speed</h3><p>Scans CPU, memory and GPU settings, applies only changes you can undo, and proves every gain with a before-and-after measurement.</p><p class="price">From $4,800 <small>per year</small></p></article>
-    <article class="card"><span class="tag">The full suite</span><h3>All five products</h3><p>One dedicated instance with every product, hosted for you or installed in your own environment.</p><p class="price">From $45,000 <small>per year</small></p></article>
+    <article class="card"><span class="tag">Optimizer</span><h3>Make models faster</h3><p>Tunes precision, threads and compile settings on your hardware, keeps the fastest setting that holds quality, checks answers on real prompts and serves the winner.</p><p class="price">From $18,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/optimizer">About Optimizer →</a></article>
+    <article class="card"><span class="tag">Bench</span><h3>Measure what hardware can do</h3><p>Memory, matrix and attention ceilings for CPUs, GPUs and memory, an end-to-end AI benchmark with full disclosure reports, and architecture planning.</p><p class="price">From $12,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/bench">About Bench →</a></article>
+    <article class="card"><span class="tag">Control</span><h3>Run the fleet</h3><p>Energy per token, auto cores at a target load, power schedules, focus mode, process control, capacity forecasts and live machine health.</p><p class="price">From $9,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/control">About Control →</a></article>
+    <article class="card"><span class="tag">Offloader</span><h3>Bigger models, smaller machines</h3><p>Model Offloader keeps easy questions on a local model and sends only hard ones to the cloud. colibri runs mixture-of-experts models larger than RAM. Both measured on your machines.</p><p class="price">From $6,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/offloader">About Offloader →</a></article>
+    <article class="card"><span class="tag">Unlock</span><h3>Find unused speed</h3><p>Scans CPU, memory and GPU settings, applies only changes you can undo, and proves every gain with a before-and-after measurement.</p><p class="price">From $4,800 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/unlock">About Unlock →</a></article>
+    <article class="card"><span class="tag">ChipForge</span><h3>From spec to silicon</h3><p>One control room for designing a CPU or AI accelerator: 18 stages from spec to bring-up with sign-off gates, verification, lab hardware, and foundry, EDA and IP partners.</p><p class="price">From $30,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products/chipforge">About ChipForge →</a></article>
+    <article class="card"><span class="tag">The full suite</span><h3>All six products</h3><p>One dedicated instance with every product, hosted for you or installed in your own environment.</p><p class="price">From $70,000 <small>per year</small></p><a class="more" href="https://cpullm.gccandfde.com/products">All products →</a></article>
   </div>
   <p class="note">Starting prices in US dollars, excluding taxes. Your quote depends on machines, sites and support.</p>
 </div></section>
@@ -200,7 +202,7 @@ footer a:hover{color:var(--ink)}
 <section class="chapter" id="next"><div class="wrap">
   <p class="eyebrow">What comes next</p>
   <h2>From optimizers <span>to accelerators.</span></h2>
-  <p class="sub">Today we make existing CPUs, GPUs and memory do more, and measure them fairly. Next on our roadmap are accelerators, designed with what the benchmarks teach us about real AI workloads, and more products in the suite.</p>
+  <p class="sub">Today we make existing CPUs, GPUs and memory do more, and measure them fairly. ChipForge is where the next chips take shape: accelerators designed with what the benchmarks teach us about real AI workloads. More products will join the suite.</p>
   <div class="btns"><a class="btn primary" href="https://cpullm.gccandfde.com/onboarding">Talk to us</a><a class="btn" href="https://cpullm.gccandfde.com/">Sign in</a></div>
 </div></section>
 </main>
