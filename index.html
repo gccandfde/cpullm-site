@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CPU-LLM: AI optimizers and benchmark systems</title>
+<meta name="description" content="CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory. Five products: Optimizer, Bench, Control, Offloader and Unlock.">
+<meta property="og:title" content="CPU-LLM: AI on the hardware you own, proved with numbers">
+<meta property="og:description" content="AI optimizers and benchmark systems for CPUs, GPUs and memory.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2;--surface:#ffffff;--ink:#16161d;--muted:#5d5f6b;--line:#e3e1da;
+  --accent:#b8561b;--accent-ink:#ffffff;--indigo:#2b2f77;--tint:#f3e7dd;--good:#1e7f52;
+  --font:"Space Grotesk",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d0e14;--surface:#151722;--ink:#ecebe6;--muted:#a3a5b4;--line:#262938;
+  --accent:#e98a4c;--accent-ink:#1a0d04;--indigo:#9aa2ff;--tint:#2a1c13;--good:#5fd39a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d0e14;--surface:#151722;--ink:#ecebe6;--muted:#a3a5b4;--line:#262938;
+  --accent:#e98a4c;--accent-ink:#1a0d04;--indigo:#9aa2ff;--tint:#2a1c13;--good:#5fd39a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:18px;height:58px}
+.mark{font-weight:700;letter-spacing:-.02em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:9px}
+.mark svg{width:26px;height:26px}
+nav.sections{display:flex;gap:16px;margin-left:auto;font-size:14px}
+nav.sections a{color:var(--muted);text-decoration:none}
+nav.sections a:hover{color:var(--ink)}
+.theme{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer}
+.hero{padding:88px 0 56px}
+.eyebrow{font:600 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(40px,7vw,78px);line-height:1.02;letter-spacing:-.035em;margin:16px 0 18px;max-width:14ch}
+h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:clamp(18px,2.2vw,22px);color:var(--muted);max-width:62ch;margin:0 0 28px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600;border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chapter{padding:72px 0;border-top:1px solid var(--line)}
+.chapter h2{font-size:clamp(30px,4.6vw,50px);line-height:1.05;letter-spacing:-.03em;margin:10px 0 14px;max-width:20ch}
+.chapter h2 span{color:var(--muted)}
+.chapter > .wrap > p.sub{color:var(--muted);max-width:64ch;margin:0 0 34px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card h3{margin:0 0 6px;font-size:21px;letter-spacing:-.01em}
+.card p{margin:0 0 10px;color:var(--muted);font-size:15.5px}
+.card ul{margin:8px 0 14px;padding-left:18px;font-size:15px}
+.price{font:600 15px var(--mono);color:var(--ink)}
+.price small{color:var(--muted);font-weight:400}
+.tag{display:inline-block;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--indigo);margin-bottom:8px}
+.stats{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr))}
+.stat b{display:block;font:700 clamp(32px,4vw,44px)/1.05 var(--font);letter-spacing:-.02em;color:var(--accent)}
+.stat span{color:var(--muted);font-size:15px}
+.note{font-size:14px;color:var(--muted)}
+pre{background:#14151c;color:#e9e6dd;border-radius:14px;padding:18px 20px;overflow:auto;font:14px/1.6 var(--mono);margin:0}
+pre .c{color:#8d8f9c}pre .k{color:#f0a36c}
+.two{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));align-items:start}
+.diagram{width:100%;height:auto}
+.diagram .box{fill:var(--surface);stroke:var(--line)}
+.diagram .hot{fill:var(--tint);stroke:var(--accent)}
+.diagram text{fill:var(--ink);font:600 14px var(--font)}
+.diagram .small{fill:var(--muted);font:400 12px var(--font)}
+.diagram .arrow{stroke:var(--accent);stroke-width:2;fill:none;marker-end:url(#ah)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:6px 14px}
+.ok{color:var(--good);font-weight:600}
+footer{border-top:1px solid var(--line);padding:40px 0 60px;color:var(--muted);font-size:14px}
+footer .cols{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+footer h4{color:var(--ink);margin:0 0 8px;font-size:14px}
+footer a{color:var(--muted);text-decoration:none;display:block;margin:3px 0}
+footer a:hover{color:var(--ink)}
+@media (max-width:760px){nav.sections{display:none}.hero{padding:56px 0 36px}.chapter{padding:52px 0}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="mark" href="#top" aria-label="CPU-LLM home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="6" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="11" y="11" width="10" height="10" rx="2" fill="#b8561b"/><path d="M11 2v4M16 2v4M21 2v4M11 26v4M16 26v4M21 26v4M2 11h4M2 16h4M2 21h4M26 11h4M26 16h4M26 21h4" stroke="currentColor" stroke-width="2"/></svg>
+    CPU-LLM</a>
+  <nav class="sections" aria-label="Page sections">
+    <a href="#products">Products</a><a href="#proof">Proof</a><a href="#how">How it works</a><a href="#offloader">Offloader</a><a href="#unlock">Unlock</a><a href="#deploy">Deploy</a>
+  </nav>
+  <button class="theme" id="theme" type="button" aria-label="Switch light or dark theme">Theme</button>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <p class="eyebrow">AI optimizers · benchmark systems · next: accelerators</p>
+  <h1>AI on the hardware you own. <em>Proved with numbers.</em></h1>
+  <p class="lead">CPU-LLM builds AI optimizers and benchmark systems for CPUs, GPUs and memory. Five products, one platform: pick what you need, run it on your own machines, keep your data, and get results you can trust and publish.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://cpullm.gccandfde.com/onboarding">Talk to us</a>
+    <a class="btn" href="#products">See the products</a>
+    <a class="btn" href="https://cpullm.gccandfde.com/ai-bench">Published results</a>
+  </div>
+</div></section>
+
+<section class="chapter" id="products"><div class="wrap">
+  <p class="eyebrow">The suite</p>
+  <h2>Five products. <span>Pick what you need.</span></h2>
+  <p class="sub">Each product works on its own. Together they share one set of machines, runs and results, so a benchmark, a tuning run and a power change land in the same place.</p>
+  <div class="grid">
+    <article class="card"><span class="tag">Optimizer</span><h3>Make models faster</h3><p>Tunes precision, threads and compile settings on your hardware, keeps the fastest setting that holds quality, checks answers on real prompts and serves the winner.</p><p class="price">From $18,000 <small>per year</small></p></article>
+    <article class="card"><span class="tag">Bench</span><h3>Measure what hardware can do</h3><p>Memory, matrix and attention ceilings for CPUs, GPUs and memory, an end-to-end AI benchmark with full disclosure reports, and architecture planning.</p><p class="price">From $12,000 <small>per year</small></p></article>
+    <article class="card"><span class="tag">Control</span><h3>Run the fleet</h3><p>Energy per token, auto cores at a target load, power schedules, focus mode, process control, capacity forecasts and live machine health.</p><p class="price">From $9,000 <small>per year</small></p></article>
+    <article class="card"><span class="tag">Offloader</span><h3>Bigger models, smaller machines</h3><p>Model Offloader keeps easy questions on a local model and sends only hard ones to the cloud. colibri runs mixture-of-experts models larger than RAM. Both measured on your machines.</p><p class="price">From $6,000 <small>per year</small></p></article>
+    <article class="card"><span class="tag">Unlock</span><h3>Find unused speed</h3><p>Scans CPU, memory and GPU settings, applies only changes you can undo, and proves every gain with a before-and-after measurement.</p><p class="price">From $4,800 <small>per year</small></p></article>
+    <article class="card"><span class="tag">The full suite</span><h3>All five products</h3><p>One dedicated instance with every product, hosted for you or installed in your own environment.</p><p class="price">From $45,000 <small>per year</small></p></article>
+  </div>
+  <p class="note">Starting prices in US dollars, excluding taxes. Your quote depends on machines, sites and support.</p>
+</div></section>
+
+<section class="chapter" id="proof"><div class="wrap">
+  <p class="eyebrow">Measured, not quoted</p>
+  <h2>Real machines. <span>Real numbers.</span></h2>
+  <p class="sub">Every number here comes from our own agent on our own hardware. Nothing is copied from a datasheet.</p>
+  <div class="stats">
+    <div class="card stat"><b>13.2 GB/s</b><span>memory bandwidth our agent measured on a Ryzen 9 8940HX laptop (Linux under WSL), started from the command line</span></div>
+    <div class="card stat"><b>76.31</b><span>AIUC/min, our first published AI Bench result, with a full disclosure report</span></div>
+    <div class="card stat"><b>31 / 31</b><span>checks passed installing the on-premises package on a clean Ubuntu server</span></div>
+    <div class="card stat"><b>5200 of 5600</b><span>MT/s: Unlock found a laptop's memory running below its rated speed, on a single channel</span></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>We count a gain only when it beats the noise</h3>
+    <p>Testing Unlock on a laptop, a change first looked like <strong>+57%</strong> CPU speed. Measured again A/B/A/B, it was the cold first run, not the change. So every measurement now starts with an uncounted warm-up, takes the median of five rounds, and calls a change faster only when it beats the spread between rounds.</p></div>
+</div></section>
+
+<section class="chapter" id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p>
+  <h2>Your machines. <span>Your data. One platform.</span></h2>
+  <div class="two">
+    <div>
+      <p>A small agent runs on each machine: Windows, Linux, macOS or WSL, CPU or GPU. It only makes outbound HTTPS calls, so nothing on the machine is opened to the internet.</p>
+      <p>The platform queues the work, the agent measures, tunes or changes settings on the machine, and the results come back as runs you can compare, report and publish when you choose.</p>
+      <p>Each customer gets a dedicated instance with its own data, hosted by us or installed in their own network.</p>
+    </div>
+    <svg class="diagram" viewBox="0 0 520 300" role="img" aria-label="Machines with agents connect out to the CPU-LLM platform, which produces runs, reports and results">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b8561b"/></marker></defs>
+      <rect class="box" x="10" y="20" width="150" height="70" rx="12"/><text x="24" y="50">Laptop · CPU</text><text class="small" x="24" y="72">agent, outbound only</text>
+      <rect class="box" x="10" y="115" width="150" height="70" rx="12"/><text x="24" y="145">Server · GPU</text><text class="small" x="24" y="167">agent, outbound only</text>
+      <rect class="box" x="10" y="210" width="150" height="70" rx="12"/><text x="24" y="240">Cloud VM</text><text class="small" x="24" y="262">agent, outbound only</text>
+      <rect class="hot" x="210" y="95" width="140" height="110" rx="14"/><text x="232" y="140">CPU-LLM</text><text class="small" x="232" y="162">your instance,</text><text class="small" x="232" y="180">your data</text>
+      <rect class="box" x="390" y="40" width="120" height="60" rx="12"/><text x="404" y="76">Runs</text>
+      <rect class="box" x="390" y="120" width="120" height="60" rx="12"/><text x="404" y="156">Reports</text>
+      <rect class="box" x="390" y="200" width="120" height="60" rx="12"/><text x="404" y="236">Published</text>
+      <path class="arrow" d="M160 55 C190 55 190 130 208 135"/><path class="arrow" d="M160 150 L208 150"/><path class="arrow" d="M160 245 C190 245 190 170 208 165"/>
+      <path class="arrow" d="M350 130 C370 130 370 70 388 70"/><path class="arrow" d="M350 150 L388 150"/><path class="arrow" d="M350 170 C370 170 370 230 388 230"/>
+    </svg>
+  </div>
+</div></section>
+
+<section class="chapter" id="offloader"><div class="wrap">
+  <p class="eyebrow">Offloader</p>
+  <h2>Spend cloud tokens <span>only where they count.</span></h2>
+  <div class="two">
+    <div class="card"><h3>Model Offloader</h3><p>Sits beside your copilot or chat tool. Repeated questions come from a cache, easy ones go to a local open model, and only hard ones reach a paid cloud model. It reports what it saved.</p>
+      <pre><span class="c"># on the machine</span>
+<span class="k">python</span> -m offloader serve --port 8787</pre></div>
+    <div class="card"><h3>colibri</h3><p>An open-source engine that runs mixture-of-experts models far larger than RAM: hot experts on the GPU, warm ones in RAM, cold ones streamed from disk. CPU-LLM measures it on your machines and checks whether a model fits before you download it.</p>
+      <p class="note">colibri is an independent project by JustVugg, under the Apache-2.0 licence. CPU-LLM is not affiliated with it.</p></div>
+  </div>
+</div></section>
+
+<section class="chapter" id="unlock"><div class="wrap">
+  <p class="eyebrow">Unlock</p>
+  <h2>The speed you paid for. <span>Changed safely, proved.</span></h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Area</th><th>What Unlock checks</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>CPU</td><td>Power plan, core parking, governor, turbo boost, cores switched off</td><td><span class="ok">Changes it</span> and can revert it</td></tr>
+      <tr><td>Memory</td><td>Running speed against rated speed, number of channels</td><td>Shows the BIOS step (XMP/EXPO) or the module to add</td></tr>
+      <tr><td>GPU</td><td>Power limit against the vendor's maximum</td><td><span class="ok">Changes it</span> within the vendor's limit, and can revert it</td></tr>
+      <tr><td>GPU tensor cores</td><td>Whether a GeForce card qualifies for the separate gpu-unlock project</td><td>Shows the steps; the owner installs it; we measure before and after</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">No software can switch on cores fused off in the chip, and Unlock never touches firmware or drivers. gpu-unlock is an independent GPL-2.0 project by Zagitta for GeForce RTX 20, 30 and 40 cards on Linux; check NVIDIA's licence terms before using it at work.</p>
+</div></section>
+
+<section class="chapter" id="deploy"><div class="wrap">
+  <p class="eyebrow">Deploy</p>
+  <h2>Hosted for you, <span>or in your own network.</span></h2>
+  <div class="two">
+    <div class="card"><h3>Dedicated hosted instance</h3><p>We run an instance only for you, with its own database. Connect your machines and start measuring the same day.</p></div>
+    <div class="card"><h3>On premises, one command per customer</h3>
+      <pre><span class="c"># install the platform on a Linux server</span>
+<span class="k">sudo</span> bash cpullm-instance install
+<span class="c"># create an isolated instance</span>
+<span class="k">sudo</span> cpullm-instance new acme --port 4100</pre></div>
+  </div>
+</div></section>
+
+<section class="chapter" id="next"><div class="wrap">
+  <p class="eyebrow">What comes next</p>
+  <h2>From optimizers <span>to accelerators.</span></h2>
+  <p class="sub">Today we make existing CPUs, GPUs and memory do more, and measure them fairly. Next on our roadmap are accelerators, designed with what the benchmarks teach us about real AI workloads, and more products in the suite.</p>
+  <div class="btns"><a class="btn primary" href="https://cpullm.gccandfde.com/onboarding">Talk to us</a><a class="btn" href="https://cpullm.gccandfde.com/">Sign in</a></div>
+</div></section>
+</main>
+
+<footer><div class="wrap cols">
+  <div><h4>CPU-LLM</h4><p>AI optimizers and benchmark systems for CPUs, GPUs and memory.</p><p>© 2026 GCC and FDE. All rights reserved.</p></div>
+  <div><h4>Platform</h4><a href="https://cpullm.gccandfde.com/">Sign in</a><a href="https://cpullm.gccandfde.com/onboarding">Customers and partners</a><a href="https://cpullm.gccandfde.com/ai-bench">AI Bench results</a><a href="https://cpullm.gccandfde.com/leaderboard">Leaderboard</a></div>
+  <div><h4>Credits</h4><a href="https://github.com/JustVugg/colibri">colibri (Apache-2.0)</a><a href="https://github.com/Zagitta/gpu-unlock">gpu-unlock (GPL-2.0)</a><p>Independent projects, not affiliated with CPU-LLM.</p></div>
+</div></footer>
+
+<script>
+(function(){
+  var b=document.getElementById('theme'),k='cpullm-site-theme';
+  function set(t){if(t){document.documentElement.setAttribute('data-theme',t)}else{document.documentElement.removeAttribute('data-theme')}}
+  try{set(localStorage.getItem(k))}catch(e){}
+  b.addEventListener('click',function(){
+    var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    var t=dark?'light':'dark';set(t);try{localStorage.setItem(k,t)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
